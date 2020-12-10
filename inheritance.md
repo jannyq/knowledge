@@ -1,6 +1,6 @@
 ## Inheritance
 
-### Inheritance in C#
+### Inheritance in C# #
 In inheritance, the derived class inherits all the members (fields, methods) of the base class, but it cannot inherit the constructor of the class class because constructors are not member of a class. Instead of inheriting constructors by the derived class, it is onlu allowed to invoke the constructor of a base class.
 
 When both the base class and the derived class have constructors, both the constructors needs to be executed. To overcome this situation, C# provide a keyword **base**. Using this, the derived class can call the base class constructor.
