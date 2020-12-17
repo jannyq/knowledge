@@ -1,5 +1,6 @@
 ### Caching
 
+#### What is caching?
 Caching is the technique that stores copies of your website's data in a temporary storage location that is closer to the end user. A cache is any temporary storage location for copies of files or data. This helps the data be displayed to the uses quicker.
 
 Each time a browser requests a new web page, the server will have to to certain calculations in the background to retrieve the website. This can be time-consuming and have an effect on page load speed. However, for the majority of the time, the calculations to pull up a specific website will be exactly the same. This is where caching comes into play - caching the website allows the server to remember the final result, rather than having to process each request separately.
