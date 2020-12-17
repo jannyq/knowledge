@@ -1,0 +1,7 @@
+### Branching
+Branching is the duplication of an object under version control so that modifications can occur in parallel along multiple **branches**. It enables developers to work on different parts of a project without impacting each other.
+> A branch is a copy of a codeline, managed in a version control system. Branching helps development teams work in parallel. It separates out "in-progress work" from tested and stable code.
+
+The codebase in a VCS is often referred to as the trunk, baseline, master, or mainline. Developers create branches - originating either directly or indirectly from the mainline - to experiment in isolation. This keeps the overall product stable. It is a best practice to update these working branches with changes in related codelines. This is done by merging.
+
+The advantages are obvious - you work on features independently, and so they never affect anyone else's work until it comes time to merge. You can do code reviews and targeted testing on the feature branch without holding anyone else up if there are any issues.
