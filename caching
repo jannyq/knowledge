@@ -1,0 +1,22 @@
+### Caching
+
+Caching is the technique that stores copies of your website's data in a temporary storage location that is closer to the end user. A cache is any temporary storage location for copies of files or data. This helps the data be displayed to the uses quicker.
+
+Each time a browser requests a new web page, the server will have to to certain calculations in the background to retrieve the website. This can be time-consuming and have an effect on page load speed. However, for the majority of the time, the calculations to pull up a specific website will be exactly the same. This is where caching comes into play - caching the website allows the server to remember the final result, rather than having to process each request separately.
+
+A good explanation: A speaker asks the audience "What's 3,567,789 divided by 23456?". Everyone fell silent. Some people pulled up calculators to do the math, and finally someone yelled out the answer after a few seconds. Then the speaker asked the exact same question again. This time everyone was able to immediately call out the answer. This is how caching works. The initial time-consuming process was done once, then after that, when the same question was asked, the answer was readily available, and delivered much faster.
+
+
+#### Different types of caching
+##### Server caching
+Server caching is when the server stores the results of a request, later serving up the saved results instead of recalculating each time. There are different types of serving caching methods. Using a CDN (content delivery network) caches files in proxy servers that are located closer to the end users than the origin servers.
+
+There is also DNS caching which takes place on DNS servers. Servers can store recent DNS look-ups in their cache; they then don't need to query name servers and can instantly reply with the IP address of a domain.
+
+##### Browser caching
+Your browser stores a collection of resources of the websites that you already visited so that it doesn't have to retrieve them each time you visit said website. This significantly increases the loading time the second that you visit. If a website has made a lot of changes then you may have to clear your browser to see the latest version of the updated site.
+
+#### Why use caching?
+1. Increase web loading
+2. Better SEO ranking
+3. Improved overall user experience
