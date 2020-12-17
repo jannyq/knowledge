@@ -1,0 +1,115 @@
+### Singleton
+Singleton is a pattern that ensures a class has only one instance and provides a global point of access to it.
+
+#### When to use Singleton
+If you have a functionality that just handle something or just process something, and does not need to know the state of the object (is totally static), it's not necessary to have many instances of the same object, spending memory to do something that a single instance can do. For some components, it only makes sense to have one instance in the system, for example:
+- Database repository: If you have an object which accesses the database, and it loads up the database in the constructor into memory and then gives out information about the content of the database once its loaded. So once you read the database you do not need to read it again (especially when you are testing the code).
+- Object factory: If you have a factory that creates some components, then it's not necessary to have more than one instance of it, because a factory is not supposed to have any state.
+- Handle files: If you have a class that process files, and you have many processes happen at the same time, instead of having many instances to deal with this processing, you can have a single instance of this object, this way it will save memory consumption.
+
+So Singleton can be used in situations where the constructor call to a particular object is particularly expensive and you only need to have this call being called once (needs one, and only one instance of an object), and once that you construct the singleton object, you will provide everyone with the same instance of that object that was instantiated, avoiding that other clients make new copies of that object.
+
+#### The classic approach
+```
+public class Singleton
+{
+    private static readonly Singleton instance = new Singleton();
+
+    private Singleton()
+    {
+    }
+
+    public static Singleton Instance => instance;
+}
+```
+The private constructor prevents an instance from getting created outside of the Singleton class. Rather, the singleton object can be obtained by accessing the Instance property, a common naming convention. The instance field is a private property and it is a property of the same class. It is static, so when it is created it will be kept.
+
+One pitfall to this approach is we have no control over when the instantiation happens. The static instance field gets triggered at some point after the program starts and before it is used. If we want more control over when the instantiation happens we can slightly update our implementation.
+
+Using the Lazy<Singleton> type, we can delay the instantiation of the Singleton class until the momemt it is used for the first time. This is a little better but, there are still quite a few issues with this approach.
+
+```
+public class Singleton
+{
+    private static readonly Lazy<Singleton> lazy = new Lazy<Singleton>(() => new Singleton());
+    private Singleton()
+    {
+    }
+    public static Singleton Instance => lazy.Value;
+}
+```
+##### The problem
+The classic approach works, but it does not come without pitfalls.
+- The class needs to be explicitly written as a singleton.
+- It is not unit test friendly. Relying on static fields makes it impossible to mock. This restricts the types of unit tests that can be written for any class that uses a class written in this way.
+- With construction handled inside the class, dependencies cannot be easily injected. This again makes unit testing difficult.
+
+
+#### Singleton in ASP.NET Core
+There is a much better way to implement a singleton in ASP.NET Core. Most IoC (inversion of control) containers allow a "lifetime" to be applied when wiring up dependencies. With the ASP.NET Core Dependency Injection framework, the following life cycles are available:
+- Transient - Each time a transient object is request, a new instance will be created
+- Scoped - The same object will be used when requested within the same request
+- Singleton - The same object will always be used across all requests
+
+```
+ public class Startup
+ {
+     public Startup(IConfiguration configuration)
+     {
+         Configuration = configuration;
+     }
+
+     public IConfiguration Configuration { get; }
+
+     // This method gets called by the runtime. Use this method to add services to the container.
+     public void ConfigureServices(IServiceCollection services)
+     {
+         services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+         services.AddSingleton<ISingleton, Singleton>();
+     }
+
+     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+     {
+         if (env.IsDevelopment())
+         {
+             app.UseDeveloperExceptionPage();
+         }
+         else
+         {
+             app.UseHsts();
+         }
+         app.UseHttpsRedirection();
+         app.UseMvc();
+     }
+ }
+```
+
+There is no longer required any special logic to make it a singleton. Instead, we let the dependency injection framework do all the heavy lifting. Furthermore since the class is managed by an IoC container, out singleton can now have dependencies of its own injected into.
+
+```
+public class Singleton : ISingleton
+{
+    private readonly IDataRepository _repository;
+    public Singleton(IDataRepository repository)
+    {
+        _repository = repository;
+    }
+}
+```
+
+Consumers of the class can use the singleton by injecting it with the IoC container. They don't even have to be aware of their life cycle.
+
+```
+[Route("api/[controller]")]
+[ApiController]
+public class ValuesController : ControllerBase
+{
+    private readonly ISingleton _singleton;
+    public ValuesController(ISingleton singleton)
+    {
+        _singleton = singleton;
+    }
+    // Removed for brevity
+}
+```
