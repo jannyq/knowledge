@@ -1,0 +1,14 @@
+### Index
+An index is used to speed up searching in the database. An index can be used to efficiently find all rows matching some column in your query and then walk through only that subset of the table to find exact matches. If you don't have indexes on any column in the `WHERE` clause, the SQL server has to walk through _the whole table_ and check every row to see if it matches, which may be a slow operation on big tables.
+
+In short, indexing results in reduced number of database pages that need to be scanned in a search.
+
+#### Clustered index
+A clustered index determines the physical order of data in a table. There can be only one clustered index per table (the clustered index IS the table). A clustered index is like the contents of a phone book where data is ordered by name. You can only have one clustered index, but the index can contain multiple columns (composite index), in the same way a phone book is ordered by last name and first name.
+
+#### Non-clustered index
+A non-clustered index is an index where the order of the rows does not match the physical order of the actual data.  It is instead ordered by the columns that make up the index.  In a non-clustered index, the leaf pages of the index do not contain any actual data, but instead contain pointers to the actual data.  These pointers would point to the clustered index data page where the actual data exists.
+
+#### Why not indexing everything?
+- Uses more disk space
+- `DELETE` and `UPDATE` queries can get slower since they also have to be updated
