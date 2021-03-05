@@ -1,0 +1,9 @@
+### Builder
+
+Builder is a creational design pattern, which allows construction complex objects step by step.
+Unlike other creational patterns, Builder doesn't require products to have a common interface. That makes it possible to produce different products using the same construction process.
+
+
+The Builder pattern is a well-known pattern in the C# world. It's especially useful when you need to create an object with lots of possible configuration options.
+
+**Identification:** The Builder pattern can be recognized in a class, which has a single create methods and several methods to configure the resulting object. Builder methods often support chaining. 
